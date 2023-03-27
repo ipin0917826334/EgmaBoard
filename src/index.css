@@ -28,3 +28,11 @@ svg {
 	margin-bottom: 1rem;
 }
 
+.topic-container {
+	display: flex;
+	flex-wrap: wrap;
+	max-width: calc(450px * 4); /* maximum width of 4 topics */
+	margin: 0 auto;
+	overflow-x: auto; /* enable horizontal scrolling if necessary */
+	
+  }
