@@ -1,38 +1,35 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import 'tailwindcss/base';
+@import 'tailwindcss/components';
+@import 'tailwindcss/utilities';
 body {
   margin: 0;
-  padding: 0;
-  font-family: 'Quicksand', sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
-svg {
-  margin: 0.5em;
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+}
+.route-info {
+  display: flex;
+  align-items: center;
 }
 
-.navbar-item {
-  font-weight: 700;
+.route-info__vehicle {
+  display: flex;
+  align-items: center;
+  margin: 0 1rem;
 }
 
-.hero {
-	height: 100vh;
-	display: flex;
-	align-items: center;
-	justify-content: center;
+.route-info__vehicle span {
+  margin-left: 8px;
 }
 
-.title,
-.page-title {
-	font-weight: 700;
-	margin-bottom: 1rem;
+.route-info__arrow {
+  font-size: 16px;
+  margin: 0 1rem;
 }
-
-.topic-container {
-	display: flex;
-	flex-wrap: wrap;
-	max-width: calc(450px * 4); /* maximum width of 4 topics */
-	margin: 0 auto;
-	overflow-x: auto; /* enable horizontal scrolling if necessary */
-	
-  }

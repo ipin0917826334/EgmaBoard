@@ -1,28 +1,55 @@
-import React, { Component } from 'react'
-import { NavLink } from 'react-router-dom'
-import Routing from './routes'
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import Header from "./components/Header";
+import Footer from "./components/Footer";
+import Home from "./components/Home";
+import Board from "./components/Board";
+import NewTopic from "./components/NewTopic";
+import { useState } from "react";
+// import { mockTopics, addNewTopic } from "./mockData";
 
-class App extends Component {
-  render() {
-    return (
-      <div className="my-app">
-        <header className="bg-red shadow-sm" role="navigation" aria-label="main navigation">
-          <div className="max-w-7xl mx-auto py-4 px-4 sm:px-6 lg:px-8 flex justify-between items-center">
-          <div>
-          <h1 className="text-3xl font-bold text-gray-800">Egma Board</h1>
-        </div>
-        <nav className="flex space-x-4">
-                <NavLink exact to="/" activeClassName="is-active" className="navbar-item">Home</NavLink>
-                <NavLink to="/forum" activeClassName="is-active" className="navbar-item">Forum</NavLink>
-                <NavLink to="/about" activeClassName="is-active" className="navbar-item">About</NavLink>
-                </nav>
-          </div>
-        </header>
+function App() {
+  // const [topics, setTopics] = useState(mockTopics);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [userProfile, setUserProfile] = useState(null);
+  const userData = JSON.parse(localStorage.getItem('userData'));
+  const onLoginSuccess = (response) => {
+    setIsLoggedIn(true);
+    setUserProfile(response.profileObj);
+  };
 
-        <Routing />
+  const onLogoutSuccess = () => {
+    setIsLoggedIn(false);
+    setUserProfile(null);
+  };
+
+  return (
+    <Router>
+      <div className="App flex flex-col min-h-screen font-display">
+        <Header
+          isLoggedIn={isLoggedIn}
+          userProfile={userProfile}
+          onLoginSuccess={onLoginSuccess}
+          onLogoutSuccess={onLogoutSuccess}
+        />
+        <main className="container mx-auto flex-grow">
+          <Routes>
+            <Route
+              exact
+              path="/"
+              element={<Home userProfile={userProfile} userData={userData} />}
+            />
+            <Route
+              exact
+              path="/new-topic"
+              element={<NewTopic userData={userData} />}
+            />
+            <Route path="/topic/:id" element={<Board userData={userData} />} />
+          </Routes>
+        </main>
+        <Footer />
       </div>
-    )
-  }
+    </Router>
+  );
 }
 
-export default App
+export default App;
