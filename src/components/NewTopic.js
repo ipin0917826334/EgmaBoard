@@ -10,14 +10,9 @@ function NewTopic({ userData }) {
   const [likes, setLikes] = useState(0);
   const [dislikes, setDislikes] = useState(0);
   const [author, setAuthor] = useState(userData.name);
-  const [vehicles, setVehicles] = useState([]);
-  const [start, setStart] = useState("");
-  const [destination, setDestination] = useState("");
   const [titleError, setTitleError] = useState(null);
   const [descriptionError, setDescriptionError] = useState(null);
-  const [startError, setStartError] = useState(null);
-  const [destinationError, setDestinationError] = useState(null);
-  const [vehicleError, setVehicleError] = useState(null);
+
 
   // Custom validation functions
   const validateTitle = () => {
@@ -40,41 +35,8 @@ function NewTopic({ userData }) {
     }
   };
 
-  const validateStart = () => {
-    if (start.trim() === "") {
-      setStartError("Start location cannot be empty.");
-      return false;
-    } else {
-      setStartError(null);
-      return true;
-    }
-  };
 
-  const validateDestination = () => {
-    if (destination.trim() === "") {
-      setDestinationError("Destination cannot be empty.");
-      return false;
-    } else {
-      setDestinationError(null);
-      return true;
-    }
-  };
 
-  // Custom validation function to ensure vehicles array is not empty
-  const validateVehicles = () => {
-    console.log(vehicles)
-    if (!vehicles || vehicles.length === 0) {
-      setVehicleError("Please add at least one vehicle.");
-      return false;
-    } else {
-      setVehicleError(null);
-      return true;
-    }
-  };
-
-  const updateVehicles = (vehicles) => {
-    setVehicles(vehicles);
-  };
 
   async function handleSubmit(e) {
     e.preventDefault();
@@ -82,16 +44,10 @@ function NewTopic({ userData }) {
     // Call all the custom validation functions
     const isTitleValid = validateTitle();
     const isDescriptionValid = validateDescription();
-    const isStartValid = validateStart();
-    const isDestinationValid = validateDestination();
-    const isVehiclesValid = validateVehicles();
 
     if (
       !isTitleValid ||
-      !isDescriptionValid ||
-      !isStartValid ||
-      !isDestinationValid ||
-      !isVehiclesValid
+      !isDescriptionValid
     ) {
       return;
     }
@@ -101,11 +57,7 @@ function NewTopic({ userData }) {
       description,
       likes,
       dislikes,
-      posts: [],
       author,
-      start,
-      vehicles,
-      destination,
     };
     console.log("New topic data:", newTopic);
     
@@ -151,46 +103,6 @@ function NewTopic({ userData }) {
           ></textarea>
           {descriptionError && (
             <p className="text-red-600 text-sm mt-2">{descriptionError}</p>
-          )}
-        </div>
-        <div>
-          <div>
-            <label htmlFor="start" className="block mb-1">
-              จุดเริ่มต้น:
-            </label>
-            <input
-              type="text"
-              id="start"
-              value={start}
-              onChange={(e) => setStart(e.target.value)}
-              required
-              className="p-2 border border-gray-300 rounded"
-            />
-            {startError && (
-              <p className="text-red-600 text-sm mt-2">{startError}</p>
-            )}
-          </div>
-          <div>
-            <label htmlFor="destination" className="block mb-1">
-              ปลายทาง:
-            </label>
-            <input
-              type="text"
-              id="destination"
-              value={destination}
-              onChange={(e) => setDestination(e.target.value)}
-              required
-              className="p-2 border border-gray-300 rounded"
-            />
-            {destinationError && (
-              <p className="text-red-600 text-sm mt-2">{destinationError}</p>
-            )}
-          </div>
-        </div>
-        <div>
-          <VehicleInput updateVehicles={updateVehicles} />
-          {vehicleError && (
-            <p className="text-red-600 text-sm mt-2">{vehicleError}</p>
           )}
         </div>
 

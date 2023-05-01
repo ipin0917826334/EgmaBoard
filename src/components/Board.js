@@ -1,8 +1,10 @@
-import React, { useState } from "react";
-
+import React, { useState, useEffect } from "react";
+import api from "../services/api";
+const { v4: uuidv4 } = require('uuid');
 const Board = () => {
   const [topics, setTopics] = useState([]);
-
+  const [noteId, setNoteId] = useState(1);
+  const [newContent, setNewContent] = useState();
   const [newTopicName, setNewTopicName] = useState("");
   const [topicInputChk, setTopicInputChk] = useState(0);
   const [noteInputChk, setNoteInputChk] = useState(0);
@@ -10,28 +12,41 @@ const Board = () => {
   const handleNewTopicNameChange = (e) => {
     setNewTopicName(e.target.value);
   };
+  const fetchTopics = async () => {
+    try {
+      const response = await api.get("/topics/board");
+      // console.log("ss"+response.data)
+      setTopics(response.data);
+    } catch (error) {
+      console.error("Error fetching topics:", error);
+    }
+  };
+  useEffect(() => {
+    fetchTopics();
+  }, []);
 
-  const addTopic = () => {
+  const addTopic = async () => {
     if (newTopicName) {
       const newTopic = {
-        id: topics.length + 1,
+        _id: uuidv4(),
         name: newTopicName,
-        notes: [],
+        notes:[]
       };
-      setTopics([...topics, newTopic]);
+      const response = await api.post("/topics/board", newTopic);
+      setTopics([...topics, response.data]);
       setNewTopicName("");
       setTopicInputChk(1);
     }
   };
 
-  const deleteTopic = (topicId) => {
-    const newTopics = topics.filter((topic) => topic.id !== topicId);
-    setTopics(newTopics);
+  const deleteTopic = async (topicId) => {
+    const response = await api.delete(`/topics/board/${topicId}`);
+    fetchTopics();
   };
 
   const handleTopicNameChange = (topicId, newName) => {
     const newTopics = [...topics];
-    const topicIndex = newTopics.findIndex((topic) => topic.id === topicId);
+    const topicIndex = newTopics.findIndex((topic) => topic._id === topicId);
     newTopics[topicIndex].name = newName;
     setTopics(newTopics);
   };
@@ -50,40 +65,50 @@ const Board = () => {
     };
   };
 
-  const addNote = (topicId, content = "", type = "text/plain") => {
-    const newTopics = [...topics];
-    const topicIndex = newTopics.findIndex((topic) => topic.id === topicId);
+  const addNote = (topicId) => {
+    let a = [...topics].filter(item => item._id == topicId)[0]
+    const topicIndex = topics.findIndex((topic) => topic._id === topicId);
     const newNote = {
-      id: newTopics[topicIndex].notes.length + 1,
-      content,
-      type,
+      _id:uuidv4(),
+      date: Date.now(),
+      content: null,
+      type: null,
     };
-    newTopics[topicIndex].notes.push(newNote);
-    setTopics(newTopics);
-    // setSaveNoteChk(1);
+    a.notes.push(newNote)
+
+    let tp = [...topics]
+    tp.splice(topicIndex, 1)
+    tp.splice(topicIndex, 0, a)
+    console.log(tp)
+    setTopics(tp)
   };
   // const saveNote = () => {
   //   setNoteInputChk(1);
   // };
 
 
-  const deleteNote = (topicId, noteId) => {
-    const newTopics = [...topics];
-    const topicIndex = newTopics.findIndex((topic) => topic.id === topicId);
-    newTopics[topicIndex].notes = newTopics[topicIndex].notes.filter(
-      (note) => note.id !== noteId
-    );
-    setTopics(newTopics);
+  const deleteNote = async (topicId, noteId) => {
+    const response = await api.delete(`/topics/board/${topicId}/${noteId}`);
+    fetchTopics();
   };
 
-  const updateNote = (topicId, noteId, content) => {
+  const updateNote = async (topicId, noteId, content) => {
     const newTopics = [...topics];
-    const topicIndex = newTopics.findIndex((topic) => topic.id === topicId);
+    const topicIndex = newTopics.findIndex((topic) => topic._id === topicId);
     const noteIndex = newTopics[topicIndex].notes.findIndex(
       (note) => note.id === noteId
     );
     newTopics[topicIndex].notes[noteIndex].content = content;
-    setTopics(newTopics);
+  
+    // const response = await api.put(`/topics/board/${topicId}`, newTopics[topicIndex]);
+    const updatedTopic = {
+      ...newTopics[topicIndex],
+      notes: newTopics[topicIndex].notes.filter((note) => note.content !== ""),
+    };
+    
+    const response = await api.put(`/topics/board/${topicId}`, updatedTopic);
+    fetchTopics();
+    // setTopics(newTopics);
   };
 
   return (
@@ -94,7 +119,7 @@ const Board = () => {
         </div>
         <div className="flex flex-wrap justify-center gap-4">
           {topics.map((topic) => (
-            <div key={topic.id} className="w-1/4 bg-gray-100 p-4 rounded">
+            <div key={topic._id} className="w-1/4 bg-gray-100 p-4 rounded">
               <div className="flex justify-between items-center mb-4 gap-4">
                 {topicInputChk == 0 ? <input
                   className="border border-gray-400 p-2 w-full rounded"
@@ -106,55 +131,54 @@ const Board = () => {
                 /> : <h2 className="font-bold text-lg">เรื่อง: {topic.name}</h2>}
                 <button
                   className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
-                  onClick={() => deleteTopic(topic.id)}
+                  onClick={() => deleteTopic(topic._id)}
                 >
                   Delete
                 </button>
               </div>
               <div>
                 {topic.notes.map((note) => (
-                  <div key={note.id} className="mb-2">
-                    {note.type.startsWith("image/") ? (
+                  <div key={note._id} className="mb-2">
+                    {note.type && note.type.startsWith("image/") ? (
                       <img
                         src={note.content}
                         alt="uploaded"
                         className="w-full rounded mt-3"
                       />
-                    ) : (noteInputChk === 1 ?
-                      <h2>{note.content}</h2>
-                     :  <textarea
-                     className="border border-gray-400 p-2 w-full rounded mt-3"
-                     value={note.content}
-                     onChange={(e) =>
-                       updateNote(topic.id, note.id, e.target.value)
-                     }
-                   /> 
+                    ) : (
+                      <textarea
+                        className="border border-gray-400 p-2 w-full rounded mt-3"
+                        value={note.content}
+                        onChange={(e) =>
+                          updateNote(topic._id, note.id, e.target.value)
+                        }
+                      />
                     )}
                     <button className="bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-2 rounded float-right mt-2"
-                      onClick={() => deleteNote(topic.id, note.id)}
+                      onClick={() => deleteNote(topic._id, note._id)}
                     >
                       Delete
                     </button>
                   </div>
                 ))}
-                 <div className="flex gap-4">
-                <button
-                  className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mr-2"
-                  onClick={() => addNote(topic.id)}
-                >
-                  Add Note
-                </button>
-                <label className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded cursor-pointer">
+                <div className="flex gap-4">
+                  <button
+                    className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mr-2"
+                    onClick={() => addNote(topic._id)}
+                  >
+                    Add Note
+                  </button>
+                  <label className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded cursor-pointer">
                     Add Image
                     <input
                       className="hidden"
                       type="file"
                       accept="image/*"
-                      onChange={(e) => handleFileInputChange(e, topic.id)}
+                      onChange={(e) => handleFileInputChange(e, topic._id)}
                     />
                   </label>
                   {/* {saveNoteChk == 1 ? <button className="bg-blue-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded mr-2" onClick={saveNote}>Save</button>: null} */}
-              </div>
+                </div>
               </div>
             </div>
           ))}
