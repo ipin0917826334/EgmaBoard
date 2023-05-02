@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import VehicleInput from "./VehicleInput"; // Import the VehicleInput component
 import api from "../services/api";
 
 function NewTopic({ userData }) {
@@ -12,7 +11,6 @@ function NewTopic({ userData }) {
   const [author, setAuthor] = useState(userData.name);
   const [titleError, setTitleError] = useState(null);
   const [descriptionError, setDescriptionError] = useState(null);
-
 
   // Custom validation functions
   const validateTitle = () => {
@@ -37,6 +35,8 @@ function NewTopic({ userData }) {
 
 
 
+  // Custom validation function to ensure vehicles array is not empty
+
 
   async function handleSubmit(e) {
     e.preventDefault();
@@ -57,7 +57,9 @@ function NewTopic({ userData }) {
       description,
       likes,
       dislikes,
+      posts: [],
       author,
+
     };
     console.log("New topic data:", newTopic);
     
@@ -105,6 +107,7 @@ function NewTopic({ userData }) {
             <p className="text-red-600 text-sm mt-2">{descriptionError}</p>
           )}
         </div>
+
 
         <button
           type="submit"

@@ -1,25 +1,30 @@
 const express = require('express');
-const dynamoose = require("dynamoose");
+const mongoose = require('mongoose');
 const cors = require('cors');
 const topicsRouter = require('./routes/topics');
 
 const app = express();
 app.use(express.json());
-app.use(cors());
+const corsOptions = {
+  origin: function (origin, callback) {
+    if (origin === 'http://localhost:3000') {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  }
+};
+
+app.use(cors(corsOptions));
 app.use('/api/topics', topicsRouter);
 
-// Create new DynamoDB instance
-const ddb = new dynamoose.aws.ddb.DynamoDB({
-  "credentials": {
-      "accessKeyId": "ASIA3L4S2WA5W6KJR7VK",
-      "secretAccessKey": "GCLVi3ZnlbGvZZ8bIdrZ3PhQsCe44gzMTUkQaPaD",
-      "sessionToken": "FwoGZXIvYXdzEMb//////////wEaDDKWe3fABlW89vRK8iLIATPArmhp+vxf9kAeeoWJOuXqq6DBNaHVauaZyvmjcAw2f82pk6bjHjq4APEQigMf55QMv4SYBNNC2r6ZfxvYIAX+FGdkoXyMdJDoj4CJBoP4DewrsKg77HJgZiCZ6dwHJo2H6RIdu7sdknKYrAIo5MKMuIb33vWCug/myzyICrYB0DMLULkGGe1BxA16MTw1Zi1VlRG0SWYY3CRBvyh0E09FUyIDwwQdQtQvat+9RfVqlyyyuRsyMm/6aZWWZoS4ArWsdzMfl4ubKK78w6IGMi1BP2NQtYn1Cr2Qpbi3HPMRb7p+2NZarCbjRIfi6I6BrVd3iF5YMpid42aqceg="
-  },
-  "region": "us-east-1"
-});
+mongoose.connect('mongodb://63070049:Asd04140@ac-hf8gfdn-shard-00-00.rliflax.mongodb.net:27017,ac-hf8gfdn-shard-00-01.rliflax.mongodb.net:27017,ac-hf8gfdn-shard-00-02.rliflax.mongodb.net:27017/?ssl=true&replicaSet=atlas-va9ist-shard-0&authSource=admin&retryWrites=true&w=majority', { useNewUrlParser: true, useUnifiedTopology: true });
 
-// Set DynamoDB instance to the Dynamoose DDB instance
-dynamoose.aws.ddb.set(ddb);
+const db = mongoose.connection;
+db.on('error', console.error.bind(console, 'connection error:'));
+db.once('open', function () {
+  console.log('Connected to MongoDB');
+});
 
 const PORT = process.env.PORT || 5001;
 app.listen(PORT, () => console.log(`Server started on port ${PORT}`));

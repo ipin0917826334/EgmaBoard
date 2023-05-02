@@ -2,9 +2,11 @@ import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
 import Home from "./components/Home";
-import Board from "./components/Board";
+import Topic from "./components/Topic";
 import NewTopic from "./components/NewTopic";
 import { useState } from "react";
+import { Buffer } from "buffer";
+window.Buffer = Buffer;
 // import { mockTopics, addNewTopic } from "./mockData";
 
 function App() {
@@ -43,7 +45,7 @@ function App() {
               path="/new-topic"
               element={<NewTopic userData={userData} />}
             />
-            <Route path="/topic/:id" element={<Board userData={userData} />} />
+            <Route path="/topic/:id" element={<Topic userData={userData} />} />
           </Routes>
         </main>
         <Footer />

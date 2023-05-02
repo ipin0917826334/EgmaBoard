@@ -55,7 +55,7 @@ function Header() {
         <NavLink exact to="/" activeClassName="text-blue-200" className="mr-4">
            <img src="/logo.png"
             alt="home"
-            className="h-10 w-10 rounded-full mr-2"></img>
+            className="h-10 w-10 mr-2"></img>
         </NavLink>
         {userData == null?(<div></div>):( <NavLink to="/new-topic" activeClassName="text-blue-200">
           สร้างหัวข้อ
