@@ -12,13 +12,6 @@ pipeline {
                 sh 'docker stop $(docker ps -a -q) || true'
                 sh 'docker rm $(docker ps -a -q) || true'
                 sh 'docker rmi $(docker images -a -q) --force || true'
-                // sh 'docker stop Forum-server || true'
-                // sh 'docker rm forum-server || true'
-                // sh 'docker rmi forum-server || true'
-
-                // sh 'docker stop Forum-client || true'
-                // sh 'docker rm forum-client || true'
-                // sh 'docker rmi forum-client || true'
               }
         }
         stage('Install dependencies') {
@@ -42,10 +35,10 @@ pipeline {
                     docker.build('forum-server', './server')
                     docker.build('forum-client')
                     sh 'docker login -u $DOCKERHUB_COMMON_CREDS_USR -p $DOCKERHUB_COMMON_CREDS_PSW'
-                    sh 'docker tag forum-client ipin0917826334/forum-client'
-                    sh 'docker image push ipin0917826334/forum-client'
-                    sh 'docker tag forum-server ipin0917826334/forum-server'
-                    sh 'docker image push ipin0917826334/forum-server'
+                    sh 'docker tag forum-client 63070047/forum-client'
+                    sh 'docker image push 63070047/forum-client'
+                    sh 'docker tag forum-server 63070047/forum-server'
+                    sh 'docker image push 63070047/forum-server'
                         
                 }
             }
