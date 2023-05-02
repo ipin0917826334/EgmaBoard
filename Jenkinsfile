@@ -34,7 +34,7 @@ pipeline {
                 script {
                     docker.build('forum-server', './server')
                     docker.build('forum-client')
-                    sh 'docker login -u $DOCKERHUB_COMMON_CREDS_USR -p $DOCKERHUB_COMMON_CREDS_PSW'
+                    sh 'docker login -u 63070047 -p dckr_pat_vChSkcPdih_dt4iJtGHUGKDPEeg'
                     sh 'docker tag forum-client 63070047/forum-client'
                     sh 'docker image push 63070047/forum-client'
                     sh 'docker tag forum-server 63070047/forum-server'
