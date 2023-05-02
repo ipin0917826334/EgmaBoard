@@ -11,9 +11,9 @@ app.use('/api/topics', topicsRouter);
 // Create new DynamoDB instance
 const ddb = new dynamoose.aws.ddb.DynamoDB({
   "credentials": {
-      "accessKeyId": "ASIA3L4S2WA54OAV3LZS",
-      "secretAccessKey": "qY9OFUafURPTbncTwnqLqS600MfcZARUnw68oSh4",
-      "sessionToken": "FwoGZXIvYXdzELP//////////wEaDGeJK7u+bCr5ba34QyLIAXohd51C3Osx6dVqc8i23JrJve18cWjklT0EeSlYPm5LqODad9RjfZAEbKregCPJeduDAaKG1Ms5B+iDvegrYljopLMEs2f2waC7l2Yzc+R31x7osbvR4u/6/dxSVs0Qiv8IypgR53sLnfbQYIUIzkOJu2l4N4CXwFiasMvrdPnvdI+XrbeVjRDlJVhCFbRWm6pHuGQGaRC/OLWqezTVe6x5BxR6jLHJIHMjEb7f08swUT5c7YiAQeAIThLjOLGs2MQf1iOCocbpKND8v6IGMi1BlvdrEMdBGSBcavQSdtTAR8BAXcE+b4zxA/pQnKpgLjhjRDZRLlfkZnPzurE="
+      "accessKeyId": "ASIA3L4S2WA5W6KJR7VK",
+      "secretAccessKey": "GCLVi3ZnlbGvZZ8bIdrZ3PhQsCe44gzMTUkQaPaD",
+      "sessionToken": "FwoGZXIvYXdzEMb//////////wEaDDKWe3fABlW89vRK8iLIATPArmhp+vxf9kAeeoWJOuXqq6DBNaHVauaZyvmjcAw2f82pk6bjHjq4APEQigMf55QMv4SYBNNC2r6ZfxvYIAX+FGdkoXyMdJDoj4CJBoP4DewrsKg77HJgZiCZ6dwHJo2H6RIdu7sdknKYrAIo5MKMuIb33vWCug/myzyICrYB0DMLULkGGe1BxA16MTw1Zi1VlRG0SWYY3CRBvyh0E09FUyIDwwQdQtQvat+9RfVqlyyyuRsyMm/6aZWWZoS4ArWsdzMfl4ubKK78w6IGMi1BP2NQtYn1Cr2Qpbi3HPMRb7p+2NZarCbjRIfi6I6BrVd3iF5YMpid42aqceg="
   },
   "region": "us-east-1"
 });
