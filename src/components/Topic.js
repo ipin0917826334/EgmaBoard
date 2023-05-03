@@ -49,9 +49,9 @@ function Topic({ userData }) {
     const config = {
       bucketName: "egmacs",
       region: "us-east-1",
-      accessKeyId: "ASIA3L4S2WA5W6KJR7VK",
-      secretAccessKey: "GCLVi3ZnlbGvZZ8bIdrZ3PhQsCe44gzMTUkQaPaD",
-      sessionToken: "FwoGZXIvYXdzEMb//////////wEaDDKWe3fABlW89vRK8iLIATPArmhp+vxf9kAeeoWJOuXqq6DBNaHVauaZyvmjcAw2f82pk6bjHjq4APEQigMf55QMv4SYBNNC2r6ZfxvYIAX+FGdkoXyMdJDoj4CJBoP4DewrsKg77HJgZiCZ6dwHJo2H6RIdu7sdknKYrAIo5MKMuIb33vWCug/myzyICrYB0DMLULkGGe1BxA16MTw1Zi1VlRG0SWYY3CRBvyh0E09FUyIDwwQdQtQvat+9RfVqlyyyuRsyMm/6aZWWZoS4ArWsdzMfl4ubKK78w6IGMi1BP2NQtYn1Cr2Qpbi3HPMRb7p+2NZarCbjRIfi6I6BrVd3iF5YMpid42aqceg=",
+      accessKeyId: "ASIA3L4S2WA53UMK3AVL",
+      secretAccessKey: "cywM/eDgy8kb/8P4MNLy5imbTq2wglRIh0aKMNVq",
+      sessionToken: "FwoGZXIvYXdzENn//////////wEaDCQFAu7aCKxQXsKN+CLIAVYGFnC37e9YnKW3Box8txyhCy2wjyOIeimYkpNOcNcFdvG/DNW3ZPJ+NW/rGwOYGZqVfemhJ6yyOCkXjowS5Ef8Z2coh+HoRYETdY/NjhyMHFD4OvpKDCePBlVTTaKoKc6SyE6Pi/Kw/tHWqrIj5TenpVAEjckNIq8w7jXeODgL9Cc7kUUBfjeFztvFwPiQoe3Jyx4RtUA7JQOGfWfsJBcBOFnwpPq2eYs5DjVDCO57tU/6Do32wMc0vC02eOIR1A44221ZW0fdKIeSyKIGMi0Pz+Fr1+Zte7vyBG9kR09Ak2VPBr9dCmKcmh09qoLG3MYj2VZAu7ZGkqI7MoQ=",
       s3Url: "https://egmacs.s3.amazonaws.com", // Optional
     };
     const s3 = new AWS.S3(config);
