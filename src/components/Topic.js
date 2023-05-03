@@ -30,7 +30,6 @@ function Topic({ userData }) {
       const response = await api.get(`/topics/${id}`);
       console.log(response);
       // console.log(response.data.vehicles);
-      //Set the start, destination, and vehicles state using the fetched data
 
       setTopic(response.data);
     } catch (error) {
@@ -55,8 +54,6 @@ function Topic({ userData }) {
       s3Url: "https://egmacs.s3.amazonaws.com", // Optional
     };
     const s3 = new AWS.S3(config);
-    // const fileName = `${Date.now()}_${image.name}`;
-    // const fileType = image.type;
     const params = {
       Bucket: 'egmacs',
       Key: 'images/' + image.name,
@@ -64,27 +61,6 @@ function Topic({ userData }) {
       Body: image
     };
 
-    // s3.uploadFile(image, fileName, fileType, config)
-    // .then((data) => {
-    //   console.log("Image uploaded successfully:", data);
-    //   setImage(null);
-    //   setAddImageModalIsOpen(false);
-    //   handleCreateComment(data.location); // Pass the image URL to handleCreateComment function
-    // })
-    // .catch((err) => {
-    //   console.error("Error uploading image:", err);
-    // });
-    // s3.putObject(params, function (err, data) {
-    //   if (err) {
-    //     console.log('Error uploading image:', err);
-    //   } else {
-    //     console.log('Image uploaded successfully:', data);
-    //     setImage(null);
-    //     setAddImageModalIsOpen(false);
-    //     console.log(data.Bucket)
-    //     handleCreateComment(data.Location);
-    //   }
-    // });
     try {
       const data = await s3.putObject(params).promise();
       console.log("Image uploaded successfully:", data);
@@ -121,43 +97,6 @@ function Topic({ userData }) {
       console.error("Error adding comment:", error);
     }
   }
-  // async function handleCreateComment(imageUrl) {
-  //   const newPost = {
-  //     // id: Math.max(...topic.posts.map((p) => p.id)) + 1,
-  //     title: "New Comment",
-  //     content: comment,
-  //     image: imageUrl, // Pass the URL of the uploaded image
-  //     likes: 0,
-  //     dislikes: 0,
-  //     author: name,
-  //     imgProfile: imgProfile,
-  //   };
-  
-  //   // Optimistically update the state before the API call
-  //   setTopic({ ...topic, posts: [...topic.posts, newPost] });
-  //   setComment("");
-  //   setModalIsOpen(false);
-  
-  //   try {
-  //     const response = await api.post(`/topics/${id}/posts`, newPost);
-  //     const createdComment = response.data;
-  //     // Update the state with the actual data returned from the API
-  //     setTopic((prevTopic) => {
-  //       const updatedPosts = prevTopic.posts.map((post) =>
-  //         post.id === createdComment.id ? createdComment : post
-  //       );
-  //       return { ...prevTopic, posts: updatedPosts };
-  //     });
-  //   } catch (error) {
-  //     console.error("Error adding comment:", error);
-  //     // Revert the state change if the API call fails
-  //     setTopic((prevTopic) => ({
-  //       ...prevTopic,
-  //       posts: prevTopic.posts.filter((post) => post.id !== newPost.id),
-  //     }));
-  //   }
-  // }
-  
 
   return (
     <div className="topic p-4">
